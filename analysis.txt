@@ -1,0 +1,47 @@
+Name: Xiangzhen Sun
+Project: #4
+Description: worst case time complexity analysis of makeEmpty( BinaryNode* & t )
+
+First, I acknowledge that the binary tree employed in this project is aimed at operating postfix-infix expression.
+Assuming correctness, the final form of the binary tree must be a "full binary tree", namely, a binary tree in which each node has either no child or two children.
+For analysis convenience, we reiterate the makeEmpty function:
+
+void makeEmpty( BinaryNode* & t )  {
+	if( t != nullptr )  {
+		makeEmpty( t->left );
+		makeEmpty( t->right );
+		delete t;
+	}
+	t = nullptr;
+}
+
+Assuming we are at the root BinaryNode, and the depth of the tree is indicated by 'n' :
+1). in order to delete root, we need first to delete: 1.1) root->left
+						      1.2) root->right
+
+2). in order to delete root->left, we need to first delete: 2.1.1) root->left->left
+							    2.1.2) root->left->right
+	,and then delete root->right in this way: 	    2.2.1) root->right->left
+							    2.2.2) root->right->right
+3). now in the third step, we got 2^3 operations to complete, with each 2 operations corresponding to one instruction in the second step, namely, deleting:
+								3.1.1.1) root->left->left->left
+								3.1.1.2) root->left->left->right
+								3.1.2.1) root->left->right->left
+								3.1.2.2) root->left->right->right
+								3.2.1.1) root->right->left->left
+								3.2.1.2) root->right->left->right
+								3.2.2.1) root->right->right->left
+								3.2.2.2) root->right->right->right
+4).
+5).
+....until we complete the deletion and return to the base case in recursion.
+
+So, as we said, if the height or depth of the tree is n, then the operation we complete in one recursion function is:
+		1 * ( 1 - 2^n )
+	       -----------------  = 2^n - 1
+		     1 - 2
+, which is, approximated to 2^n when n approach to infinity.
+
+So far, it is crystally clear that the time complexity of the makeEmpty function, in term of the 'Big-O', is:
+		O( log(n) )
+, definitely.
